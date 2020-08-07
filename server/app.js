@@ -3,6 +3,7 @@ const express = require('express'); // The express.js library for implementing t
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
+const path = require('path');
 const mongoose = require('mongoose');
 
 /**** Configuration ****/
@@ -13,6 +14,7 @@ const app = express(); // Get the express app object.
 app.use(bodyParser.json()); // Add middleware that parses JSON from the request body.
 app.use(morgan('combined')); // Add middleware that logs all http requests to the console.
 app.use(cors()); // Avoid CORS errors. https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+app.use(express.static('../client/build'));
 
 /**** Some test data ****/
 const auctions = [
@@ -76,6 +78,10 @@ Auction = mongoose.model('auction', auctionSchema)
 
 /**** Connection ****/
 //app.listen(port, () => console.log(`${appName} API running on port ${port}!`));
+
+app.get('*', (req, res) =>
+    res.sendFile(path.resolve('..','client','build','index.html'))
+);
 
 const dbUrl = "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false";
 mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
