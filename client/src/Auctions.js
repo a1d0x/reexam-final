@@ -6,7 +6,7 @@ import AddAuction from "./AddAuction";
 class Auctions extends Component {
     render() {
         const list = this.props.data.map(a =>
-            <li><Link to ={"/Auction/"+a.id}>{a.auction}</Link></li>);
+            <li><Link to ={"/Auction/"+a._id}>{a.title}</Link></li>);
 
         return (
             <>

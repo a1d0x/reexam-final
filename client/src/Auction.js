@@ -10,7 +10,7 @@ class Auction extends Component {
         if (auctionContent) {
             innerContent =
                 <>
-                    <h1>{auctionContent.auction}</h1>
+                    <h1>{auctionContent.title}</h1>
                     <section>{auctionContent.description}</section>
 
                     <h3>Bids</h3>

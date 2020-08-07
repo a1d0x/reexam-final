@@ -23,14 +23,14 @@ class App extends Component {
     async getAuctions() {
         let url = `${this.API_URL}/auctions`; // URL of the API.
         let result = await fetch(url); // Get the data
-        let json = await result.json(); // Turn it into json
+        let auction = await result.json(); // Turn it into json
         return this.setState({ // Set it in the state
-            auctions: json
+            auctions: auction
         })
     }
 
     getAuction(id) {
-        const auction = this.state.auctions.find(a => a.id === parseInt(id));
+        const auction = this.state.auctions.find(a => a._id === id);
         return auction;
     }
 
@@ -73,7 +73,7 @@ class App extends Component {
     render() {
         return (
             <>
-                <h1>Online Auction House</h1>
+                <h1>Auction House</h1>
                 <Router>
                     <Auctions path="/" data={this.state.auctions}
                                addAuction={(text) => this.addAuction(text)}

@@ -3,6 +3,7 @@ const express = require('express'); // The express.js library for implementing t
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 /**** Configuration ****/
 const appName = "Express API Template"; // Change the name of your server app!
@@ -30,13 +31,13 @@ const auctions = [
 ];
 
 /**** Routes ****/
+app.get('/api/auctions', (req, res) => {
+    Auction.find({}, (error, auctions) => {
+        res.json(auctions)})
+});
 
-// Return all recipes in data
-app.get('/api/auctions', (req, res) => res.json(auctions));
-
-// PostAnswer
 app.post('/api/auctions/:id/bids', (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     const text = req.body.text;
     const auction = auctions.find(a => a.id === id);
     auction.bids.push(text);
@@ -46,12 +47,33 @@ app.post('/api/auctions/:id/bids', (req, res) => {
 
 app.post('/api/auctions/newauction', (req, res) => {
     const text = req.body.text;
-    let auction = {id:auctions.length+1,auction:text,bids:[]};
-    auctions.push(auction);
+    let auction = new Auction({title: text, description: text, bids:[]});
+    auction.save();
+   // auctions.push(auction);
 
     res.json({msg: "Auction added", auction: auction})
 
-})
+});
 
-/**** Start! ****/
-app.listen(port, () => console.log(`${appName} API running on port ${port}!`));
+/**** Schemas ****/
+let Auction;
+const auctionSchema = new mongoose.Schema({
+    title: String,
+    description: String,
+    bids: [{
+        username: String,
+        amount: Number,
+        date: Date
+    }]
+});
+Auction = mongoose.model('auction', auctionSchema)
+
+/**** Connection ****/
+//app.listen(port, () => console.log(`${appName} API running on port ${port}!`));
+
+const dbUrl = "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false";
+mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(async() => {
+        await app.listen(port);
+        console.log("Database connected:", mongoose.connection.name)
+    }).catch(error => console.error(error));
