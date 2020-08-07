@@ -44,7 +44,7 @@ app.post('/api/auctions/:id/bids', (req, res) => {
     console.log(auction);
     res.json({msg: "Bid placed", auction: auction});
 });
-
+//test test
 app.post('/api/auctions/newauction', (req, res) => {
     const text = req.body.text;
     let auction = new Auction({title: text, description: text, bids:[]});
