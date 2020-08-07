@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from "@reach/router";
 
 class PlaceBid extends Component {
     constructor(props) {

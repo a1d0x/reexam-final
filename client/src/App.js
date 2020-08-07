@@ -4,8 +4,6 @@ import Auctions from "./Auctions";
 import Auction from "./Auction";
 
 class App extends Component {
-    // API url from the file '.env' OR the file '.env.development'.
-    // The first file is only used in production.
     API_URL = process.env.REACT_APP_API_URL;
 
     constructor(props) {
@@ -16,15 +14,14 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // Get everything from the API
         this.getAuctions().then(() => console.log("Auction created"));
     }
 
     async getAuctions() {
-        let url = `${this.API_URL}/auctions`; // URL of the API.
-        let result = await fetch(url); // Get the data
-        let auction = await result.json(); // Turn it into json
-        return this.setState({ // Set it in the state
+        let url = `${this.API_URL}/auctions`;
+        let result = await fetch(url);
+        let auction = await result.json();
+        return this.setState({
             auctions: auction
         })
     }

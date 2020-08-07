@@ -1,5 +1,5 @@
 /**** External libraries ****/
-const express = require('express'); // The express.js library for implementing the API
+const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -7,28 +7,34 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 /**** Configuration ****/
-const appName = "Express API Template"; // Change the name of your server app!
-const port = process.env.PORT || 8080; // Pick port 8080 if the PORT env variable is empty.
-const app = express(); // Get the express app object.
+const appName = "Express API Template";
+const port = process.env.PORT || 8080;
+const app = express();
 
-app.use(bodyParser.json()); // Add middleware that parses JSON from the request body.
-app.use(morgan('combined')); // Add middleware that logs all http requests to the console.
-app.use(cors()); // Avoid CORS errors. https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+app.use(bodyParser.json());
+app.use(morgan('combined'));
+app.use(cors());
 app.use(express.static('../client/build'));
 
-/**** Some test data ****/
-const auctions = [
+/**** Users****/
+const users = [
     {
         id: 0,
-        auction: "Refurbished GTX 1660ti",
-        description: "It's a good graphics card",
-        bids: ["800kr", "850kr"]
+        role: "admin",
+        username: "jesperheller",
+        password: "adminsRcool"
     },
     {
         id: 1,
-        auction: "Old African Mask",
-        description: "A mask taken home from a holiday",
-        bids: ["250kr"]
+        role: "user",
+        username: "aidox",
+        password: "pw1234"
+    },
+    {
+        id: 2,
+        role: "user",
+        username: "gajzii",
+        password: "ollinator"
     },
 ];
 
