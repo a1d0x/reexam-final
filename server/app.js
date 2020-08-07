@@ -36,18 +36,25 @@ app.get('/api/auctions', (req, res) => {
         res.json(auctions)})
 });
 
-app.post('/api/auctions/:id/bids', (req, res) => {
+app.post('/api/auctions/:id/bids', async (req, res) => {
     const id = req.params.id;
     const text = req.body.text;
-    const auction = auctions.find(a => a.id === id);
-    auction.bids.push(text);
-    console.log(auction);
-    res.json({msg: "Bid placed", auction: auction});
+    let highestBid = parseInt(text);
+    const auction = await Auction.findById(id)
+    if(auction.bids[auction.bids.length-1].amount > highestBid){
+        res.json({most: "no"})
+    }
+    else{
+        auction.bids.push({amount: text, date: Date.now()});
+        auction.save();
+        console.log(auction);
+        res.json({msg: "Bid placed", auction: auction});
+    }
 });
 //test test
 app.post('/api/auctions/newauction', (req, res) => {
     const text = req.body.text;
-    let auction = new Auction({title: text, description: text, bids:[]});
+    let auction = new Auction({title: text, description: text, bids:[{amount:0, date: Date.now()}]});
     auction.save();
    // auctions.push(auction);
 
@@ -61,7 +68,6 @@ const auctionSchema = new mongoose.Schema({
     title: String,
     description: String,
     bids: [{
-        username: String,
         amount: Number,
         date: Date
     }]

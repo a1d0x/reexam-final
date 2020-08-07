@@ -1,13 +1,18 @@
 import React, {Component} from 'react';
 import {Link} from "@reach/router";
 import PlaceBid from "./PlaceBid";
+import Moment from "moment"
 
 class Auction extends Component {
     render() {
         const id = this.props.id;
         const auctionContent = this.props.getAuction(id);
         let innerContent = <p>Loading</p>;
+        let list = [];
         if (auctionContent) {
+            for(let i = 0;i < auctionContent.bids.length; i++){
+            list.push(<li>{auctionContent.bids[i].amount} kr. - {Moment(auctionContent.bids[i].date).format('MMMM Do YYYY, h:mm:ss')}</li>)
+            }
             innerContent =
                 <>
                     <h1>{auctionContent.title}</h1>
@@ -15,7 +20,7 @@ class Auction extends Component {
 
                     <h3>Bids</h3>
                     <ul>
-                        {auctionContent.bids.map(h => <li key={h}>{h}</li>)}
+                        {list}
                     </ul>
 
                     <Link to="/">Back</Link>

@@ -36,6 +36,7 @@ class App extends Component {
 
     async placeBid(id, text) {
         console.log("placeBid", id, text);
+
         const url = `http://localhost:8080/api/auctions/${id}/bids`;
 
         const response = await fetch(url, {
